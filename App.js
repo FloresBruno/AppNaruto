@@ -6,107 +6,124 @@
  * @flow strict-local
  */
 
-import React from 'react';
-import type {Node} from 'react';
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-} from 'react-native';
+import React, {Component,  PureComponent } from "react";
+import {View, StyleSheet, TouchableOpacity, Text,} from "react-native";
+import CustomButton from "./component/buttom";
+import ActionButtons from "./component/actionButtons";
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
 
-const Section = ({children, title}): Node => {
-  const isDarkMode = useColorScheme() === 'dark';
-  return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
-    </View>
-  );
-};
+class App extends PureComponent {
+  constructor(props) {
+    super(props);
 
-const App: () => Node = () => {
-  const isDarkMode = useColorScheme() === 'dark';
+    this.state = {
+      counter: 0,
+    };
+  
+  console.log("constructor");
 
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
+    this.handleUp = this.handleUp.bind(this);
+    this.handleDown = this.handleDown.bind(this);
+    this.handleReset = this.handleReset.bind(this);
+    this.handlePlus10 = this.handlePlus10.bind(this);
+  }
 
-  return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <Section title="papa">
-            Edit <Text style={styles.highlight}>App.js</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
+  componentWillMount() {
+    console.log("componentWillMount");
+  }
+
+  componentDidMount() {
+    console.log("componentDidMount");
+  }
+
+  handleUp() {
+    const { counter: ct } = this.state;
+    this.setState({ counter: ct + 1 });
+  }
+
+  handleDown() {
+    const { counter: ct } = this.state;
+    this.setState({ counter: ct - 1 });
+  }
+
+  handleReset() {
+    this.setState({ counter: 0 });
+  }
+
+  handlePlus10() { 
+    const { counter: ct } = this.state;
+    this.setState ({ counter: ct + 10});
+  }
+
+  render() {
+    const {counter} = this.state;
+
+    console.log("render");
+  
+
+    return (
+      <View style={styles.container}>
+        <View style={styles.subcontainer}>
+          <CustomButton label="-" action={this.handleDown}/>
+            <View style={styles.counterContainer}>
+             <Text style={styles.counter}>{counter}</Text>
+            </View>
+
+          <CustomButton label="+" action={this.handleUp}/>
         </View>
-      </ScrollView>
-    </SafeAreaView>
-  );
-};
+    
+        <View style={styles.subcontainerReset}>
+            <ActionButtons reset={this.handleReset} plus={this.handlePlus10}/>
+            </View>
+      </View>
+    );
+  }
+}
 
 const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
+  container: {
+    flex: 1,
+    backgroundColor: "#d35400",
+    justifyContent: "center",
   },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
+  
+  subcontainer: {
+    height: 50,
+    width: "100%",
+    paddingHorizontal: 10,
+    flexDirection: "row"
   },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
+
+  subcontainerReset: {
+    height: 50,
+    width: "100%",
+    paddingHorizontal: 10,
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 30,
   },
-  highlight: {
-    fontWeight: '700',
+
+  btn: {
+    width: 50,
+    height: 50,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "yellow",
   },
+  
+  counterContainer: {
+    flex:1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  counter: {
+    fontSize: 40,
+    color: "black",
+    fontWeight: "bold",
+  },
+
 });
+
 
 export default App;
